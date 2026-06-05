@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusTrack Bus Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="driver-portal-body operations-body">
+  <header class="driver-console-nav operations-nav">
+    <a class="driver-back-btn" href="./driver.html" aria-label="Back to driver dashboard">
+      <i data-lucide="chevron-left"></i>
+    </a>
+
+    <a class="driver-console-brand" href="./driver.html">
+      <div class="brand-icon"><i data-lucide="bus"></i></div>
+      <div>
+        <h1>BusTrack <span>/ Operations</span></h1>
+        <p>Live Mission Control</p>
+      </div>
+    </a>
+
+    <div class="driver-console-meta">
+      <div id="operationsStatusPill" class="driver-online-pill"><span></span> Ready to share</div>
+      <div class="driver-profile-pill">
+        <strong>AM</strong>
+        <div>
+          <b id="operationsDriverMini">Arjun Mehta</b>
+          <span>Active driver</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="operations-shell">
+    <section class="operations-hero-card">
+      <div class="operations-hero-top">
+        <div>
+          <p class="trust-pill"><i data-lucide="radio-tower"></i> Single bus operations</p>
+          <h2 id="operationsBusNo">GJ-18-Z-7932</h2>
+          <p id="operationsRouteName">Bardoli to Navsari</p>
+        </div>
+        <div id="operationsLiveBadge" class="operations-live-badge">
+          <span></span>
+          <strong>Ready</strong>
+        </div>
+      </div>
+
+      <div class="operations-facts-grid">
+        <article><span>Driver</span><strong id="operationsDriver">Arjun Mehta</strong></article>
+        <article><span>Shift Time</span><strong id="operationsShift">06:30 AM - 02:30 PM</strong></article>
+        <article><span>Current Stop</span><strong id="operationsCurrentStop">Bardoli GSRTC Bus Station</strong></article>
+        <article><span>Next Stop</span><strong id="operationsNextStop">Sarbhon</strong></article>
+        <article><span>ETA Status</span><strong id="operationsEta">On time - 4 min</strong></article>
+        <article><span>Occupancy</span><strong id="operationsOccupancy">Medium</strong></article>
+        <article><span>GPS Accuracy</span><strong id="operationsAccuracy">3m</strong></article>
+        <article><span>Operational Status</span><strong id="operationsLiveStatus">Ready</strong></article>
+      </div>
+    </section>
+
+    <section class="operations-layout">
+      <div class="operations-main-column">
+        <section class="operations-panel live-share-panel">
+          <div class="driver-panel-head">
+            <div>
+              <h3><i data-lucide="navigation"></i> Live Location Sharing</h3>
+              <p>Realtime GPS tracking for one active operational session.</p>
+            </div>
+            <div class="operations-timer">
+              <span>Live Timer</span>
+              <strong id="operationsTimer">00:00</strong>
+            </div>
+          </div>
+
+          <button id="startLiveBtn" class="operations-primary-cta" type="button">
+            <i data-lucide="radio-tower"></i>
+            <span>Start Live Location Sharing</span>
+          </button>
+
+          <label class="simulation-toggle">
+            <span>
+              <strong>Simulation Mode</strong>
+              <small>Pilot route movement for real-device testing</small>
+            </span>
+            <input id="simulationModeToggle" type="checkbox">
+          </label>
+
+          <div class="operations-control-row">
+            <button id="pauseTrackingBtn" type="button"><i data-lucide="pause"></i> Pause Tracking</button>
+            <button id="resumeTrackingBtn" type="button"><i data-lucide="play"></i> Resume Tracking</button>
+            <button id="stopSharingBtn" type="button"><i data-lucide="wifi-off"></i> Stop Sharing</button>
+            <button id="endJourneyBtn" type="button"><i data-lucide="square"></i> End Journey</button>
+          </div>
+        </section>
+
+        <section class="operations-panel gps-debug-panel">
+          <div class="driver-panel-head compact">
+            <div>
+              <h3><i data-lucide="crosshair"></i> Live GPS Debug</h3>
+              <p>Driver signal, Firebase sync, and recovery state.</p>
+            </div>
+            <div id="gpsDebugStatus" class="gps-debug-status">Standby</div>
+          </div>
+          <div class="gps-debug-grid">
+            <article><span>Latitude</span><strong id="gpsLatitude">Waiting</strong></article>
+            <article><span>Longitude</span><strong id="gpsLongitude">Waiting</strong></article>
+            <article><span>Accuracy</span><strong id="gpsAccuracyValue">Not available</strong></article>
+            <article><span>Last Updated</span><strong id="gpsLastUpdated">Not started</strong></article>
+            <article><span>Firebase</span><strong id="firebaseStatus">Not connected</strong></article>
+            <article><span>Last Sync</span><strong id="firebaseLastSync">Not synced</strong></article>
+            <article><span>Sync State</span><strong id="firebaseSyncState">Standby</strong></article>
+            <article><span>GPS Connection</span><strong id="gpsConnectionStatus">Disconnected</strong></article>
+            <article><span>Signal Freshness</span><strong id="signalFreshness">Offline</strong></article>
+            <article><span>Session State</span><strong id="sessionState">Ready</strong></article>
+            <article><span>Tracking Status</span><strong id="trackingStatus">Ready</strong></article>
+          </div>
+          <p id="gpsDebugMessage" class="gps-debug-message">Start sharing to request GPS and publish a live operational session.</p>
+        </section>
+
+        <section class="operations-panel operations-map-card">
+          <div class="driver-panel-head">
+            <div>
+              <h3><i data-lucide="map"></i> Operational Map</h3>
+              <p>Pilot route line with completed stops, current bus marker, and upcoming stops.</p>
+            </div>
+          </div>
+          <div id="operationsMap" class="operations-map">
+            <div class="ops-map-grid"></div>
+            <div class="ops-route-path"></div>
+            <div class="ops-stop stop-1 completed"></div>
+            <div class="ops-stop stop-2 current"></div>
+            <div class="ops-stop stop-3"></div>
+            <div class="ops-stop stop-4"></div>
+            <div class="ops-stop stop-5"></div>
+            <div id="opsBusMarker" class="ops-bus-marker"><i data-lucide="bus-front"></i></div>
+          </div>
+        </section>
+
+        <section id="sessionSummary" class="operations-panel session-summary" hidden>
+          <div class="driver-panel-head">
+            <div>
+              <h3><i data-lucide="badge-check"></i> Session Completed</h3>
+              <p>The demo journey has been closed for this bus.</p>
+            </div>
+          </div>
+          <div class="session-summary-grid">
+            <article><span>Duration</span><strong id="summaryDuration">00:00</strong></article>
+            <article><span>Stops Covered</span><strong id="summaryStops">2 of 5</strong></article>
+            <article><span>Final Status</span><strong>Journey ended</strong></article>
+          </div>
+        </section>
+      </div>
+
+      <aside class="operations-side-column">
+        <section class="operations-panel">
+          <div class="driver-panel-head compact">
+            <div>
+              <h3><i data-lucide="route"></i> Route Timeline</h3>
+              <p>Transit progress</p>
+            </div>
+          </div>
+          <div id="routeTimeline" class="route-timeline"></div>
+        </section>
+
+        <section class="operations-status-grid" aria-label="Operational status">
+          <article><i data-lucide="satellite"></i><span>GPS Ready</span><strong id="sideGps">3m lock</strong></article>
+          <article><i data-lucide="wifi"></i><span>Realtime Sync</span><strong>Firebase ready</strong></article>
+          <article><i data-lucide="battery-charging"></i><span>Battery</span><strong id="sideBattery">82%</strong></article>
+          <article><i data-lucide="cpu"></i><span>Tracking Engine</span><strong id="sideEngine">Standby</strong></article>
+          <article><i data-lucide="users-round"></i><span>Passenger Load</span><strong id="sideLoad">42 riders</strong></article>
+          <article><i data-lucide="clock-3"></i><span>Delay Status</span><strong id="sideDelay">On schedule</strong></article>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../page-transition.js"></script>
+  <script src="../data/pilot-stops.js"></script>
+  <script src="../data/segments.js"></script>
+  <script src="../data/pilot-segment-coordinates.js"></script>
+  <script src="../data/pilot-route-coordinates.js"></script>
+  <script src="../data/pilot-routes.js"></script>
+  <script src="../data/pilot-buses.js"></script>
+  <script src="../data/trips.js"></script>
+  <script src="../data/pilot-transit-dataset.js"></script>
+  <script src="./driver-data.js"></script>
+  <script src="./browser-gps-service.js"></script>
+  <script src="./gps-simulation-service.js"></script>
+  <script type="module" src="./bus-operations.js"></script>
+</body>
+</html>

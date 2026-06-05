@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusTrack Driver Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="driver-portal-body">
+  <header class="driver-console-nav">
+    <a class="driver-back-btn" href="../index.html" aria-label="Back to role selection">
+      <i data-lucide="chevron-left"></i>
+    </a>
+
+    <a class="driver-console-brand" href="../index.html">
+      <div class="brand-icon"><i data-lucide="bus"></i></div>
+      <div>
+        <h1>BusTrack <span>/ Driver</span></h1>
+        <p>Operations Console</p>
+      </div>
+    </a>
+
+    <div class="driver-console-meta">
+      <div class="driver-date-pill">
+        <span>Fri, May 22</span>
+        <strong>11:17 PM</strong>
+      </div>
+      <div class="driver-online-pill"><span></span> Online &middot; Ready</div>
+      <button class="driver-icon-btn" type="button" aria-label="Notifications"><i data-lucide="bell"></i></button>
+      <button class="driver-icon-btn" type="button" aria-label="Settings"><i data-lucide="settings"></i></button>
+      <div class="driver-profile-pill">
+        <strong>AM</strong>
+        <div>
+          <b>Arjun Mehta</b>
+          <span>Driver &middot; ID 4821</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="driver-console-shell">
+    <section class="driver-console-hero">
+      <p class="trust-pill"><i data-lucide="activity"></i> Shift starts in 12 min</p>
+      <h2>Good morning, <span>Arjun</span></h2>
+      <p>Search your bus number or scan the on-board QR to enter the live operations console.</p>
+    </section>
+
+    <section class="driver-search-panel">
+      <div class="driver-panel-head">
+        <div>
+          <h3>Search or Scan Your Bus</h3>
+          <p>One step to enter mission control for your assigned vehicle.</p>
+        </div>
+        <div class="driver-online-count"><span></span> 2 buses online</div>
+      </div>
+
+      <form id="driverBusForm" class="driver-search-command">
+        <label class="driver-search-input">
+          <i data-lucide="search"></i>
+          <input id="driverBusSearch" type="text" autocomplete="off" placeholder="Enter bus number (e.g. GJ-18-Z-7932)">
+        </label>
+        <button id="driverQrBtn" class="btn btn-primary driver-scan-btn" type="button">
+          <i data-lucide="qr-code"></i>
+          Scan QR
+        </button>
+      </form>
+
+      <div class="driver-quick-access" aria-label="Quick access buses">
+        <span>Quick Access</span>
+        <button type="button" data-bus="GJ-18-Z-7932"><strong>GJ-18-Z-7932</strong> &middot; Bardoli-Navsari</button>
+        <button type="button" data-bus="GJ-18-Z-7945"><strong>GJ-18-Z-7945</strong> &middot; Bardoli-Navsari</button>
+      </div>
+      <p id="driverSearchStatus" class="driver-search-status" aria-live="polite"></p>
+    </section>
+
+    <section class="driver-ready-strip" aria-label="Driver system readiness">
+      <article>
+        <div class="icon soft-blue"><i data-lucide="satellite"></i></div>
+        <div><strong>GPS Ready</strong><span>Accuracy 3m</span></div>
+        <b></b>
+      </article>
+      <article>
+        <div class="icon soft-blue"><i data-lucide="wifi"></i></div>
+        <div><strong>Network</strong><span>5G &middot; Strong</span></div>
+        <b></b>
+      </article>
+      <article>
+        <div class="icon soft-blue"><i data-lucide="battery-charging"></i></div>
+        <div><strong>Battery</strong><span>82% &middot; Charging</span></div>
+        <b class="warn"></b>
+      </article>
+      <article>
+        <div class="icon soft-blue"><i data-lucide="cpu"></i></div>
+        <div><strong>Engine</strong><span>v2.6 Ready</span></div>
+        <b></b>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="../page-transition.js"></script>
+  <script src="../data/pilot-stops.js"></script>
+  <script src="../data/segments.js"></script>
+  <script src="../data/pilot-segment-coordinates.js"></script>
+  <script src="../data/pilot-route-coordinates.js"></script>
+  <script src="../data/pilot-routes.js"></script>
+  <script src="../data/pilot-buses.js"></script>
+  <script src="../data/trips.js"></script>
+  <script src="../data/pilot-transit-dataset.js"></script>
+  <script src="./driver-data.js"></script>
+  <script src="./driver-state.js"></script>
+  <script type="module" src="./driver-ui.js"></script>
+</body>
+</html>
