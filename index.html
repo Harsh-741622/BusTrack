@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusTrack Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="role-entry-body">
+  <main class="role-entry-shell">
+    <div class="role-entry-system-pill"><span></span> All systems operational</div>
+
+    <section class="role-entry-panel">
+      <div class="role-entry-brand">
+        <div class="brand-icon"><i data-lucide="bus"></i></div>
+        <div>
+          <h1>BusTrack</h1>
+          <p>Transit OS</p>
+        </div>
+      </div>
+
+      <div class="role-entry-copy">
+        <p class="trust-pill"><i data-lucide="radio-tower"></i> Live since 2024</p>
+        <h2>Welcome to <span>BusTrack</span></h2>
+        <p>Crowd-powered real-time transit intelligence. Choose how you'll move with the network today.</p>
+      </div>
+
+      <div class="role-choice-grid" aria-label="Choose portal">
+        <a class="role-choice-card passenger" href="./user.html">
+          <div class="role-choice-icon soft-blue"><i data-lucide="users-round"></i></div>
+          <span>For commuters</span>
+          <h3>I'm a Passenger</h3>
+          <p>Track buses in real time, plan trips and get accurate ETAs for every stop on your route.</p>
+          <ul>
+            <li><i data-lucide="map-pin"></i> Live map and ETAs</li>
+            <li><i data-lucide="shield-check"></i> Crowd-sourced accuracy</li>
+          </ul>
+          <strong>Continue as Passenger <i data-lucide="arrow-right"></i></strong>
+        </a>
+
+        <a class="role-choice-card driver" href="./driver/driver.html">
+          <div class="role-choice-icon soft-green"><i data-lucide="bus-front"></i></div>
+          <span>Operations &bull; On-duty</span>
+          <h3>I'm a Driver</h3>
+          <p>Start your shift, broadcast live position, and run your route from a clean operational dashboard.</p>
+          <ul>
+            <li><i data-lucide="radio-tower"></i> One-tap live tracking</li>
+            <li><i data-lucide="shield-check"></i> Emergency tools built-in</li>
+          </ul>
+          <strong>Continue as Driver <i data-lucide="arrow-right"></i></strong>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="./page-transition.js"></script>
+  <script>
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

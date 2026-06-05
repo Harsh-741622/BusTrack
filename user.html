@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusTrack Bharat Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-icon"><i data-lucide="bus"></i></div>
+      <div>
+        <h1>BusTrack</h1>
+        <p>BHARAT</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-link active" data-page="homePage">Home</button>
+      <button class="nav-link" data-page="busPage">Bus Tracking</button>
+      <button class="nav-link" data-page="leaderboardPage">Leaderboard</button>
+      <button class="nav-link" data-page="newsPage">News</button>
+      <button class="nav-link" data-page="funPage">Fun Zone</button>
+    </nav>
+    <div class="nav-actions">
+      <button id="emergencyNavBtn" class="emergency-nav-btn" type="button">
+        <i data-lucide="siren"></i>
+        Emergency
+      </button>
+      <button class="profile-btn nav-link" data-page="profilePage">
+        <i data-lucide="user-round"></i>
+        Profile
+      </button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section id="homePage" class="page active">
+      <div class="hero-layout">
+        <article class="hero-copy">
+          <div class="trust-pill"><i data-lucide="sparkles"></i> Trusted by 240k+ commuters across India</div>
+          <h2>Know when your bus <span>actually</span> arrives.</h2>
+          <p>
+            Real-time tracking validated by fellow passengers. No more standing at empty
+            stops or sprinting after a bus that already left.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary nav-jump" data-page="busPage">Track Your Bus <i data-lucide="arrow-right"></i></button>
+            <button id="selectBusBtn" class="btn btn-ghost" data-page="onBusPage"><i data-lucide="zap"></i> I'm on a Bus</button>
+          </div>
+          <div class="hero-meta">
+            <span><i data-lucide="shield-check"></i> 98% accuracy</span>
+            <span><i data-lucide="users-round"></i> 12k live now</span>
+          </div>
+        </article>
+        <article class="live-card">
+          <div class="live-top">
+            <span>LIVE BUS STATUS</span>
+            <span class="live-pill"><span class="dot"></span> LIVE</span>
+          </div>
+          <div class="live-title">
+            <div class="bus-badge"><i data-lucide="bus-front"></i></div>
+            <div>
+              <h3>MH 12 AB 1234</h3>
+              <p><i data-lucide="map-pin"></i> Shivajinagar &rarr; Kothrud</p>
+            </div>
+          </div>
+          <div class="live-metrics">
+            <div>
+              <p class="muted"><i data-lucide="clock-3"></i> ETA</p>
+              <h4>10:47 AM</h4>
+            </div>
+            <div>
+              <p class="muted">DISTANCE</p>
+              <h4>1.2 km</h4>
+            </div>
+          </div>
+          <div class="live-foot">
+            <p class="delay">Delayed by 3 min</p>
+            <p>Updated 12s ago</p>
+          </div>
+        </article>
+      </div>
+
+      <section class="section-center">
+        <h3>Built for every commuter</h3>
+        <p>Track buses, contribute data, and see your real impact on India's air.</p>
+      </section>
+
+      <section class="feature-grid">
+        <article class="card">
+          <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+          <h4>Live Tracking</h4>
+          <p>Real-time ETAs across 50+ Indian cities, with crowd-validated accuracy.</p>
+          <button class="text-link nav-jump" data-page="busPage">Explore <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="card">
+          <div class="icon soft-green"><i data-lucide="leaf"></i></div>
+          <h4>CO2 Impact</h4>
+          <p>Track every kilo of CO2 you save by choosing the bus over a car.</p>
+          <button class="text-link nav-jump" data-page="leaderboardPage">Explore <i data-lucide="arrow-right"></i></button>
+        </article>
+        <article class="card">
+          <div class="icon soft-purple"><i data-lucide="trophy"></i></div>
+          <h4>Leaderboards</h4>
+          <p>Climb the ranks for top contributions and biggest emissions saved.</p>
+          <button class="text-link nav-jump" data-page="leaderboardPage">Explore <i data-lucide="arrow-right"></i></button>
+        </article>
+      </section>
+
+      <section class="crowd-banner">
+        <article class="banner-left">
+          <span class="badge">CROWD POWERED</span>
+          <h3>Riding right now? Help everyone behind you.</h3>
+          <p>Tap once. Scan the bus QR or pick from suggestions. Earn points, badges, and CO2 credit.</p>
+          <button id="bannerOnBusBtn" class="btn crowd-cta" data-page="onBusPage"><i data-lucide="zap"></i> I'm on a Bus</button>
+        </article>
+        <article class="banner-right">
+          <div class="quick-head">
+            <div class="icon soft-purple"><i data-lucide="qr-code"></i></div>
+            <div>
+              <h4>Quick check-in</h4>
+              <p>3 buses near you</p>
+            </div>
+          </div>
+          <div class="quick-list">
+            <article>
+              <div>
+                <h5>DL 1PC 4521</h5>
+                <p>Connaught &rarr; Saket</p>
+              </div>
+              <span>92%</span>
+            </article>
+            <article>
+              <div>
+                <h5>DL 1PD 8830</h5>
+                <p>ISBT &rarr; Dwarka</p>
+              </div>
+              <span>78%</span>
+            </article>
+            <article>
+              <div>
+                <h5>DL 1PA 2210</h5>
+                <p>Karol Bagh &rarr; Airport</p>
+              </div>
+              <span>65%</span>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section class="stats-row">
+        <article class="stat"><h4>240k+</h4><p>Active commuters</p></article>
+        <article class="stat"><h4>1.2M</h4><p>Trips logged</p></article>
+        <article class="stat"><h4>84t</h4><p>CO2 saved</p></article>
+        <article class="stat"><h4>52</h4><p>Cities live</p></article>
+      </section>
+
+      <footer class="home-footer">
+        <div>
+          <div class="brand mini">
+            <div class="brand-icon"><i data-lucide="bus"></i></div>
+            <div>
+              <h1>BusTrack</h1>
+              <p>BHARAT</p>
+            </div>
+          </div>
+          <p>Real-time, crowd-validated bus tracking for every Indian city. Built by commuters, for commuters.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <a href="#" class="footer-link nav-jump" data-page="busPage">Bus Tracking</a>
+          <a href="#" class="footer-link nav-jump" data-page="newsPage">Live Updates</a>
+          <a href="#" class="footer-link nav-jump" data-page="leaderboardPage">CO2 Leaderboard</a>
+          <a href="#" class="footer-link nav-jump" data-page="newsPage">News</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="#" class="footer-link">About</a>
+          <a href="#" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Privacy</a>
+          <a href="#" class="footer-link">Terms</a>
+        </div>
+      </footer>
+      <div class="footer-copyright">© 2025 BusTrack Bharat. Made with care for India's commuters.</div>
+    </section>
+
+    <section id="onBusPage" class="page">
+      <div class="onbus-v3">
+        <div class="onbus-v3-hero">
+          <div>
+            <p class="onbus-pill"><i data-lucide="sparkles"></i> Crowd Powered</p>
+            <h2>I'm on a Bus</h2>
+            <p>Help others with real-time updates — earn points and save CO2.</p>
+          </div>
+          <div class="onbus-v3-stats">
+            <span><i data-lucide="flame"></i> 7 day streak</span>
+            <span><i data-lucide="trophy"></i> 1,240 pts</span>
+          </div>
+        </div>
+
+        <div class="onbus-v3-progress">
+          <div class="onbus-v3-step-dot active" data-flow-dot="1">1</div>
+          <span data-flow-line="1"></span>
+          <div class="onbus-v3-step-dot" data-flow-dot="2">2</div>
+          <span data-flow-line="2"></span>
+          <div class="onbus-v3-step-dot" data-flow-dot="3">3</div>
+          <strong id="onBusStepLabel">Pick bus</strong>
+        </div>
+
+        <div class="onbus-v3-panel active" data-onbus-step="1">
+          <div class="onbus-v3-tabs">
+            <button class="active" type="button"><i data-lucide="map-pin"></i> Nearby</button>
+            <button type="button"><i data-lucide="search"></i> Search</button>
+            <button id="scanQrBtn" type="button"><i data-lucide="qr-code"></i> Scan QR</button>
+          </div>
+
+          <div class="onbus-v3-section-head">
+            <h3><i data-lucide="star"></i> Your Frequent Buses</h3>
+            <p>2 saved</p>
+          </div>
+          <div class="onbus-v3-frequent">
+            <article class="onbus-v3-bus-choice" data-nearby-bus="MH-12-PQ-0091" data-bus-title="MH12 PQ 0091" data-bus-route="Home ? Office">
+              <span class="smart-star" title="Frequently used / Smart recommended"><i data-lucide="star"></i></span>
+              <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+              <h4>MH12 PQ 0091</h4>
+              <p>Home ? Office</p>
+              <span>Tap to check in <i data-lucide="chevron-right"></i></span>
+            </article>
+            <article class="onbus-v3-bus-choice" data-nearby-bus="MH-12-RS-5512" data-bus-title="MH12 RS 5512" data-bus-route="Office ? Home">
+              <span class="smart-star" title="Frequently used / Smart recommended"><i data-lucide="star"></i></span>
+              <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+              <h4>MH12 RS 5512</h4>
+              <p>Office ? Home</p>
+              <span>Tap to check in <i data-lucide="chevron-right"></i></span>
+            </article>
+          </div>
+
+          <section class="onbus-v3-around">
+            <div class="onbus-v3-around-head">
+              <h3>Buses around you</h3>
+              <p><span></span> Live · 3 found</p>
+            </div>
+            <div class="onbus-v3-around-list">
+              <article class="onbus-v3-bus-choice onbus-v3-around-item" data-nearby-bus="MH-12-AB-1234" data-bus-title="MH 12 AB 1234" data-bus-route="Shivajinagar ? Kothrud">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH 12 AB 1234</h4>
+                  <p>Shivajinagar ? Kothrud</p>
+                  <span><i data-lucide="users-round"></i> 92% confidence <b>ETA 2 min</b></span>
+                </div>
+                <i data-lucide="chevron-right"></i>
+                <button type="button" aria-label="Save bus"><i data-lucide="star"></i></button>
+              </article>
+              <article class="onbus-v3-bus-choice onbus-v3-around-item" data-nearby-bus="MH-12-BC-7821" data-bus-title="MH 12 BC 7821" data-bus-route="Shivajinagar ? Karve Nagar">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH 12 BC 7821</h4>
+                  <p>Shivajinagar ? Karve Nagar</p>
+                  <span><i data-lucide="users-round"></i> 78% confidence <b>ETA 5 min</b></span>
+                </div>
+                <i data-lucide="chevron-right"></i>
+                <button type="button" aria-label="Save bus"><i data-lucide="star"></i></button>
+              </article>
+              <article class="onbus-v3-bus-choice onbus-v3-around-item" data-nearby-bus="MH-12-CD-4490" data-bus-title="MH 12 CD 4490" data-bus-route="Shivajinagar ? Warje">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH 12 CD 4490</h4>
+                  <p>Shivajinagar ? Warje</p>
+                  <span><i data-lucide="users-round"></i> 65% confidence <b>ETA 8 min</b></span>
+                </div>
+                <i data-lucide="chevron-right"></i>
+                <button type="button" aria-label="Save bus"><i data-lucide="star"></i></button>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <div class="onbus-v3-panel" data-onbus-step="2">
+          <section class="onbus-v3-selected-bus">
+            <button id="onBusBackToPick" type="button" aria-label="Back to bus selection"><i data-lucide="arrow-left"></i></button>
+            <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+            <div>
+              <h3 id="onBusSelectedTitle">MH 12 AB 1234</h3>
+              <p id="onBusSelectedRoute">Shivajinagar ? Kothrud</p>
+            </div>
+            <button type="button" aria-label="Save selected bus"><i data-lucide="star"></i></button>
+          </section>
+
+          <section class="onbus-v3-crowd-card">
+            <h3>How crowded is this bus?</h3>
+            <p>A quick tap helps thousands of commuters plan better.</p>
+            <div class="onbus-v3-crowd-options">
+              <button class="onbus-v3-crowd-option" type="button" data-crowd-level="Not Crowded">
+                <span class="dots one"></span>
+                <h4>Not Crowded</h4>
+                <p>Seats available</p>
+                <i data-lucide="check"></i>
+              </button>
+              <button class="onbus-v3-crowd-option" type="button" data-crowd-level="Moderate">
+                <span class="dots three"></span>
+                <h4>Moderate</h4>
+                <p>Standing space</p>
+                <i data-lucide="check"></i>
+              </button>
+              <button class="onbus-v3-crowd-option" type="button" data-crowd-level="Very Crowded">
+                <span class="dots five"></span>
+                <h4>Very Crowded</h4>
+                <p>Packed bus</p>
+                <i data-lucide="check"></i>
+              </button>
+            </div>
+            <button id="confirmBusBtn" class="btn btn-primary onbus-v3-submit" type="button" disabled>Submit Update · +10 pts</button>
+          </section>
+
+          <section class="onbus-v3-impact-strip">
+            <div class="icon soft-green"><i data-lucide="leaf"></i></div>
+            <div>
+              <h4>This trip ˜ 0.8 kg CO2 saved</h4>
+              <p>vs. driving a private car the same distance</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="onbus-v3-panel" data-onbus-step="3">
+          <section class="onbus-v3-success-card">
+            <div class="success-icon"><i data-lucide="check"></i></div>
+            <h3>Update submitted!</h3>
+            <p>Confidence on <b id="onBusSuccessBus">MH 12 AB 1234</b> increased to <span>96%</span></p>
+            <strong><i data-lucide="trophy"></i> +10 points earned</strong>
+          </section>
+
+          <section class="onbus-v3-sustainability">
+            <div>
+              <p>Sustainability Impact</p>
+              <h3>0.8 kg CO2 saved</h3>
+              <span>= planting 1 small tree ??</span>
+            </div>
+            <div class="icon"><i data-lucide="leaf"></i></div>
+            <div class="onbus-v3-sustain-stats">
+              <article><p>Total saved</p><h4>24.6 kg</h4></article>
+              <article><p>Trees equivalent</p><h4>31 ??</h4></article>
+            </div>
+            <div class="onbus-v3-weekly">
+              <p>Weekly goal <b>3.2 / 5 kg</b></p>
+              <div><span></span></div>
+            </div>
+          </section>
+
+          <div class="onbus-v3-actions">
+            <button id="checkInAnotherBtn" class="btn btn-ghost" type="button">Check in another</button>
+            <button id="onBusViewProfileBtn" class="btn btn-primary" type="button" data-page="profilePage">View profile</button>
+          </div>
+        </div>
+
+        <div id="onBusFlow" class="profile-v2-hidden">
+          <p id="onBusResult"></p>
+          <div id="suggestedBusList"></div>
+          <p id="pointsFeedback"></p>
+          <div id="crowdConfidenceBox"><div class="crowd-confidence-head"><p></p></div><div class="crowd-confidence-track"><span></span></div><p id="crowdConfidenceCopy"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="onBusSuccessPage" class="page">
+      <div class="page-hero">
+        <p class="onbus-pill"><i data-lucide="zap"></i> Crowd Powered</p>
+        <h2>I'm on a Bus</h2>
+        <p>Help fellow commuters know the bus is really moving.</p>
+      </div>
+      <section class="onbus-success-card">
+        <div class="success-icon"><i data-lucide="check"></i></div>
+        <h3>You're checked in!</h3>
+        <p>+15 points · +0.4 kg CO2 saved</p>
+        <div class="success-actions">
+          <button id="checkInAnotherBtn" class="btn btn-ghost" data-page="onBusPage">Check in another</button>
+          <button class="btn btn-primary" data-page="profilePage">View profile</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="busPage" class="page">
+      <div class="page-hero">
+        <h2>Find your next bus</h2>
+        <p>Pick where you are and where you're going. We'll do the rest.</p>
+      </div>
+
+      <div class="stepper" id="wizardStepper">
+        <div class="step-item active" data-step="1"><span>1</span><p>Network</p></div>
+        <div class="step-item" data-step="2"><span>2</span><p>City</p></div>
+        <div class="step-item" data-step="3"><span>3</span><p>From</p></div>
+        <div class="step-item" data-step="4"><span>4</span><p>To</p></div>
+      </div>
+
+      <article class="wizard-card">
+        <section class="wizard-step active" data-panel="1">
+          <div class="wizard-head">
+            <h3>Select pilot network</h3>
+          </div>
+          <div class="choice-grid two-col" id="stateChoices">
+            <button data-state="GSRTC Pilot">GSRTC Pilot <i data-lucide="chevron-right"></i></button>
+          </div>
+          <p id="stateSupportHint" class="small-muted"></p>
+        </section>
+
+        <section class="wizard-step" data-panel="2">
+          <div class="wizard-head">
+            <h3>Select your City</h3>
+            <button class="text-link back-btn" data-back="1"><i data-lucide="arrow-left"></i> Back</button>
+          </div>
+          <div class="choice-grid two-col" id="cityChoices"></div>
+        </section>
+
+        <section class="wizard-step" data-panel="3">
+          <div class="wizard-head">
+            <h3>Starting Location</h3>
+            <button class="text-link back-btn" data-back="2"><i data-lucide="arrow-left"></i> Back</button>
+          </div>
+          <label class="input-wrap">
+            <i data-lucide="map-pin"></i>
+            <input id="startLocationInput" type="text" placeholder="Enter starting location">
+          </label>
+          <button id="useLocationBtn" class="btn btn-dashed"><i data-lucide="locate-fixed"></i> Use Current Location</button>
+          <p id="locationStatus" class="small-muted"></p>
+          <button id="toStep4Btn" class="btn btn-primary">Continue <i data-lucide="arrow-right"></i></button>
+        </section>
+
+        <section class="wizard-step" data-panel="4">
+          <div class="wizard-head">
+            <h3>Destination</h3>
+            <button class="text-link back-btn" data-back="3"><i data-lucide="arrow-left"></i> Back</button>
+          </div>
+          <label class="input-wrap">
+            <i data-lucide="map-pin"></i>
+            <input id="endLocation" type="text" placeholder="Enter destination">
+          </label>
+          <label class="input-wrap">
+            <i data-lucide="clock-3"></i>
+            <input id="searchTimeInput" type="time" aria-label="Travel time">
+          </label>
+          <button id="findBusBtn" class="btn btn-primary">Find Buses <i data-lucide="arrow-right"></i></button>
+        </section>
+
+        <select id="stateSelect" class="hidden-select">
+          <option value="">Select Pilot Network</option>
+        </select>
+        <select id="citySelect" class="hidden-select" disabled>
+          <option value="">Select City</option>
+        </select>
+        <select id="startStop" class="hidden-select">
+          <option value="">Select Nearby Stop (Optional)</option>
+        </select>
+      </article>
+
+      <section class="direct-live-panel" aria-label="Track live bus by bus number">
+        <div class="direct-live-head">
+          <div>
+            <span class="direct-live-kicker"><i data-lucide="radio-tower"></i> Realtime access</span>
+            <h3>Track Live Bus</h3>
+            <p>Track buses in realtime with ETA, crowd updates, and driver signal.</p>
+          </div>
+          <div class="direct-live-pulse"><span></span> Firebase Live</div>
+        </div>
+
+        <form id="directLiveBusForm" class="direct-live-search">
+          <label class="input-wrap direct-live-input">
+            <i data-lucide="bus-front"></i>
+            <input id="directBusSearch" type="text" autocomplete="off" placeholder="Search bus number, e.g. GJ-18-Z-7932">
+          </label>
+          <button class="btn btn-primary" type="submit"><i data-lucide="navigation"></i> Track Bus</button>
+        </form>
+
+        <div id="directBusSuggestions" class="direct-bus-suggestions" aria-label="Bus suggestions"></div>
+
+        <div class="direct-live-chips" aria-label="Quick access live buses">
+          <span>Quick Access</span>
+          <button type="button" data-direct-live-bus="GJ-18-Z-7932">GJ-18-Z-7932</button>
+          <button type="button" data-direct-live-bus="GJ-18-Z-7808">GJ-18-Z-7808</button>
+        </div>
+        <p id="directBusStatus" class="direct-live-status" aria-live="polite"></p>
+      </section>
+
+      <section id="busResultsPanel" class="results-panel">
+        <div id="resultsBox" class="results-box"></div>
+        <div id="mapSection" class="map-section">
+          <h3>Live Route Preview</h3>
+          <div id="map"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="busDetailPage" class="page">
+      <div class="bus-detail-shell">
+        <div class="bus-detail-top">
+          <button class="text-link nav-jump" type="button" data-page="busPage"><i data-lucide="arrow-left"></i> Back</button>
+          <div>
+            <h2 id="detailBusNumber">GJ-18-Z-7932</h2>
+            <p id="detailBusRoute">Bardoli GSRTC Bus Station ? Navsari GSRTC Bus Station</p>
+          </div>
+          <div class="bus-detail-badges">
+            <span class="live-pill"><span class="dot"></span> LIVE</span>
+            <span id="detailStatusBadge" class="tag ok">ON TIME</span>
+          </div>
+        </div>
+
+        <section class="bus-detail-map">
+          <span><i data-lucide="map-pin"></i> Live Map</span>
+          <div id="detailTrackingBadge" class="detail-tracking-badge"><i data-lucide="navigation"></i> Tracking</div>
+          <div id="detailLiveMap"></div>
+        </section>
+
+        <section class="bus-detail-info-grid">
+          <article><div class="icon soft-blue"><i data-lucide="clock-3"></i></div><p>ETA</p><h3 id="detailEta">8 min</h3></article>
+          <article><div class="icon soft-purple"><i data-lucide="gauge"></i></div><p>DISTANCE</p><h3 id="detailDistance">5.2 km</h3></article>
+          <article><div class="icon soft-purple"><i data-lucide="users-round"></i></div><p>OCCUPANCY</p><h3 id="detailOccupancy">No crowd reports yet</h3><small id="detailCrowdContributors" class="detail-crowd-contributors">Waiting for live passenger contributors</small></article>
+          <article><div class="icon soft-green"><i data-lucide="badge-check"></i></div><p>STATUS</p><h3 id="detailStatus">On Time</h3></article>
+        </section>
+        <button id="detailDelayNote" class="bus-delay-note detail-delay-note js-incident-delay" type="button" hidden>? Delay expected due to incident</button>
+
+        <section class="bus-detail-grid">
+          <article class="bus-detail-card route-card">
+            <div class="bus-detail-card-head">
+              <h3><i data-lucide="navigation"></i> Route Details</h3>
+              <p id="detailStopCount">3 stops</p>
+            </div>
+            <div id="detailRouteSummary" class="route-summary">Bardoli GSRTC Bus Station ? Sarbhon ? Navsari GSRTC Bus Station</div>
+            <div id="detailStopsList" class="stops-list"></div>
+          </article>
+
+          <div class="bus-detail-side">
+            <article class="bus-detail-card">
+              <h3><i data-lucide="activity"></i> Live Status</h3>
+              <div class="live-status-list">
+                <p><span class="green-dot"></span> Realtime GPS tracking</p>
+                <p><span class="blue-dot"></span> ETA powered by active tracking: <b id="detailEtaInline">8 minutes</b></p>
+                <p><span class="orange-dot"></span> Live passenger contributors when available</p>
+              </div>
+            </article>
+            <article class="bus-detail-card">
+              <h3><i data-lucide="bus-front"></i> Bus Info</h3>
+              <dl class="bus-info-list">
+                <dt>Bus Number</dt><dd id="detailInfoNumber">GJ-18-Z-7932</dd>
+                <dt>From</dt><dd id="detailInfoFrom">Bardoli GSRTC Bus Station</dd>
+                <dt>To</dt><dd id="detailInfoTo">Navsari GSRTC Bus Station</dd>
+                <dt>Network</dt><dd id="detailInfoState">GSRTC Pilot</dd>
+              </dl>
+            </article>
+          </div>
+        </section>
+        <div id="journeyActions" class="bus-detail-journey-actions">
+          <button id="journeyStartBtn" class="bus-detail-journey-btn" type="button"><i data-lucide="navigation"></i> Start My Journey</button>
+          <article id="journeyJoinedCard" class="bus-detail-joined-card" hidden>
+            <div>
+              <span><i data-lucide="badge-check"></i> Journey joined</span>
+              <h3 id="journeyJoinedDestination">Destination stop</h3>
+              <p>Live passenger contribution active.</p>
+            </div>
+            <button id="journeyChangeCrowdBtn" class="journey-crowd-badge" type="button">Moderate</button>
+            <button id="journeyLeaveBtn" class="bus-detail-journey-end" type="button">Leave</button>
+          </article>
+        </div>
+
+        <div id="journeyJoinModal" class="journey-modal" aria-hidden="true">
+          <section class="journey-modal-card" role="dialog" aria-modal="true" aria-labelledby="journeyJoinTitle">
+            <div class="journey-modal-head">
+              <div>
+                <p><i data-lucide="navigation"></i> Passenger Journey</p>
+                <h3 id="journeyJoinTitle">Join this live journey</h3>
+              </div>
+              <button id="journeyModalClose" type="button" aria-label="Close journey form"><i data-lucide="x"></i></button>
+            </div>
+
+            <label class="journey-field">
+              <span>Destination stop</span>
+              <select id="journeyDestinationSelect"></select>
+            </label>
+
+            <div class="journey-field">
+              <span>Crowd level</span>
+              <div id="journeyCrowdOptions" class="journey-crowd-options">
+                <button type="button" data-journey-crowd="Not Crowded">Not Crowded</button>
+                <button type="button" data-journey-crowd="Moderate">Moderate</button>
+                <button type="button" data-journey-crowd="Very Crowded">Very Crowded</button>
+              </div>
+            </div>
+
+            <p id="journeyJoinStatus" class="journey-join-status" aria-live="polite"></p>
+
+            <div class="journey-modal-actions">
+              <button id="journeyModalCancel" class="btn btn-ghost" type="button">Cancel</button>
+              <button id="journeyJoinConfirm" class="btn btn-primary" type="button" disabled>Join Journey</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="leaderboardPage" class="page">
+      <div class="page-hero">
+        <h2>Leaderboard</h2>
+        <p>Real impact, real heroes. Updated live.</p>
+      </div>
+
+      <div class="segmented">
+        <button id="lbModeCo2" class="active"><i data-lucide="leaf"></i> CO2 Impact</button>
+        <button id="lbModeTop"><i data-lucide="users-round"></i> Top Contributors</button>
+      </div>
+
+      <section class="podium" id="podiumCards"></section>
+
+      <section class="full-ranking">
+        <div class="rank-head">
+          <h3>Full Ranking</h3>
+          <p>Week of Apr 26</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>City</th>
+              <th id="rankMetricHead">KG CO2</th>
+            </tr>
+          </thead>
+          <tbody id="lbTableBody"></tbody>
+        </table>
+      </section>
+    </section>
+
+    <section id="newsPage" class="page">
+      <div class="page-hero align-left">
+        <h2>News &amp; Updates</h2>
+        <p>Quick reads on transit, weather, and safety in your city.</p>
+      </div>
+      <section class="news-grid">
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag city">CITY</span><span><i data-lucide="clock-3"></i> 2 min read</span></div>
+          <h3>BMTC adds 200 electric buses to Bengaluru routes</h3>
+          <p>New e-buses to roll out across ORR and Whitefield corridors starting May 1.</p>
+          <span>2h ago</span>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag weather">WEATHER</span><span><i data-lucide="clock-3"></i> 1 min read</span></div>
+          <h3>Heavy rains expected in Mumbai this weekend</h3>
+          <p>Expect delays of 15-25 minutes on Western Express Highway routes.</p>
+          <span>4h ago</span>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag safety">SAFETY</span><span><i data-lucide="clock-3"></i> 3 min read</span></div>
+          <h3>Delhi DTC rolls out panic button on all night buses</h3>
+          <p>Safety upgrade covers 4,200 buses operating after 9 PM.</p>
+          <span>Yesterday</span>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag city">CITY</span><span><i data-lucide="clock-3"></i> 2 min read</span></div>
+          <h3>Pune PMPML extends route 75 to new IT park</h3>
+          <p>Direct connection from Hinjewadi Phase 3 starts next Monday.</p>
+          <span>Yesterday</span>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag weather">WEATHER</span><span><i data-lucide="clock-3"></i> 2 min read</span></div>
+          <h3>Chennai braces for cyclonic showers - bus delays likely</h3>
+          <p>Authorities advise commuters to start 20 minutes early in coastal zones.</p>
+          <span>Today</span>
+        </article>
+        <article class="news-card">
+          <div class="news-meta"><span class="news-tag safety">SAFETY</span><span><i data-lucide="clock-3"></i> 1 min read</span></div>
+          <h3>GPS coverage hits 100% on Hyderabad TSRTC fleet</h3>
+          <p>Real-time tracking now available for every public bus in the city.</p>
+          <span>Today</span>
+        </article>
+      </section>
+    </section>
+
+    <section id="funPage" class="page">
+      <div class="page-hero">
+        <h2>Fun Zone</h2>
+        <p>Light games and polls to enjoy on your ride.</p>
+      </div>
+      <section class="fun-grid">
+        <article class="card">
+          <div class="icon soft-purple"><i data-lucide="dices"></i></div>
+          <h3>Guess the Number</h3>
+          <p>I'm thinking of a number between 1 and 20.</p>
+          <div class="guess-row">
+            <input id="guessInput" type="number" min="1" max="20" placeholder="1-20">
+            <button id="guessBtn" class="btn btn-purple">Guess</button>
+          </div>
+          <p id="guessMsg" class="small-muted"></p>
+        </article>
+        <article class="card">
+          <div class="icon soft-blue"><i data-lucide="clipboard-check"></i></div>
+          <h3>Quick Poll</h3>
+          <p>What would you upgrade first?</p>
+          <div class="poll-list">
+            <button class="poll-option" data-poll="AC buses">AC buses</button>
+            <button class="poll-option" data-poll="Higher frequency">Higher frequency</button>
+            <button class="poll-option" data-poll="Better app">Better app</button>
+          </div>
+          <p id="pollResult" class="small-muted"></p>
+        </article>
+      </section>
+    </section>
+
+    <section id="profilePage" class="page">
+      <article class="profile-v2-hero">
+        <div class="profile-v2-left">
+          <div class="profile-v2-avatar">AS</div>
+          <div>
+            <p class="profile-v2-role">PRO COMMUTER <span>LVL 12</span></p>
+            <h2>Aarav Sharma</h2>
+            <p class="profile-v2-sub">Pune, Maharashtra · Member since Mar 2024</p>
+          </div>
+        </div>
+        <div class="profile-v2-right">
+          <div class="profile-v2-stat-chip">
+            <p>POINTS</p>
+            <h3 id="profilePoints">0</h3>
+          </div>
+          <div class="profile-v2-stat-chip">
+            <p>RANK</p>
+            <h3>#42</h3>
+          </div>
+        </div>
+      </article>
+
+      <section class="profile-v2-metrics">
+        <article class="profile-v2-card">
+          <div class="profile-v2-card-top">
+            <div class="icon soft-green"><i data-lucide="leaf"></i></div>
+            <h4>CO2 SAVED</h4>
+          </div>
+          <h3>12.4 <span>kg</span></h3>
+          <div class="progress"><span style="width:60%"></span></div>
+          <p>Goal: 20 kg this month</p>
+        </article>
+        <article class="profile-v2-card">
+          <div class="profile-v2-card-top">
+            <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+            <h4>TRIPS COMPLETED</h4>
+          </div>
+          <h3>48 <span>rides</span></h3>
+          <div class="progress"><span style="width:48%"></span></div>
+          <p>Avg 4 per week</p>
+        </article>
+        <article class="profile-v2-card">
+          <div class="profile-v2-card-top">
+            <div class="icon soft-purple"><i data-lucide="zap"></i></div>
+            <h4>STREAK</h4>
+          </div>
+          <h3>7 <span>days</span></h3>
+          <div class="progress"><span style="width:70%"></span></div>
+          <p>Best: 23 days</p>
+        </article>
+      </section>
+
+      <section class="profile-v2-frequent">
+        <div class="profile-v2-frequent-head">
+          <p><i data-lucide="star"></i> Quick Access</p>
+          <h3>Your Frequent Buses</h3>
+          <span><i data-lucide="sparkles"></i> Smart-sorted for your usage</span>
+        </div>
+        <div class="profile-v2-bus-grid">
+          <article class="profile-v2-bus-card" data-demo-bus="MH12 AB 1234">
+            <span class="smart-star" title="Frequently used / Smart recommended"><i data-lucide="star"></i></span>
+            <div class="profile-v2-bus-top">
+              <div class="profile-v2-bus-title">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH12 AB 1234</h4>
+                  <p><i data-lucide="map-pin"></i> Kothrud &rarr; Swargate</p>
+                </div>
+              </div>
+              <span class="profile-v2-live"><span></span> LIVE</span>
+            </div>
+            <div class="profile-v2-bus-metrics">
+              <div>
+                <p><i data-lucide="clock-3"></i> ETA</p>
+                <h5>6 min</h5>
+              </div>
+              <div>
+                <p><i data-lucide="navigation"></i> Distance</p>
+                <h5>2.4 km</h5>
+              </div>
+              <div class="profile-v2-crowd profile-v2-crowd-green">
+                <p><i data-lucide="users-round"></i> Crowd</p>
+                <h5>Not Crowded</h5>
+              </div>
+            </div>
+            <div class="profile-v2-bus-foot">
+              <p>Pickup: <strong>Karve Road</strong></p>
+              <span><i data-lucide="leaf"></i> 2.1 kg saved</span>
+            </div>
+            <div class="profile-v2-bus-actions">
+              <button class="btn btn-primary profile-v2-track-btn" type="button" data-demo-bus="MH12 AB 1234"><i data-lucide="map-pin"></i> Track</button>
+              <button class="btn profile-v2-check-btn" type="button" data-page="onBusPage"><i data-lucide="zap"></i> Check-in</button>
+            </div>
+            <span class="emergency-warning-label" role="button" tabindex="0">?? Delay expected</span>
+          </article>
+
+          <article class="profile-v2-bus-card" data-demo-bus="MH12 PQ 0091">
+            <span class="smart-star" title="Already bookmarked"><i data-lucide="star"></i></span>
+            <div class="profile-v2-bus-top">
+              <div class="profile-v2-bus-title">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH12 PQ 0091</h4>
+                  <p><i data-lucide="map-pin"></i> Shivajinagar &rarr; Hinjewadi</p>
+                </div>
+              </div>
+              <span class="profile-v2-live"><span></span> LIVE</span>
+            </div>
+            <div class="profile-v2-bus-metrics">
+              <div>
+                <p><i data-lucide="clock-3"></i> ETA</p>
+                <h5>3 min</h5>
+              </div>
+              <div>
+                <p><i data-lucide="navigation"></i> Distance</p>
+                <h5>1.2 km</h5>
+              </div>
+              <div class="profile-v2-crowd profile-v2-crowd-orange">
+                <p><i data-lucide="users-round"></i> Crowd</p>
+                <h5>Moderate</h5>
+              </div>
+            </div>
+            <div class="profile-v2-bus-foot">
+              <p>Pickup: <strong>FC Road Stop</strong></p>
+              <span><i data-lucide="leaf"></i> 4.6 kg saved</span>
+            </div>
+            <div class="profile-v2-bus-actions">
+              <button class="btn btn-primary profile-v2-track-btn" type="button" data-demo-bus="MH12 PQ 0091"><i data-lucide="map-pin"></i> Track</button>
+              <button class="btn profile-v2-check-btn" type="button" data-page="onBusPage"><i data-lucide="zap"></i> Check-in</button>
+            </div>
+          </article>
+
+          <article class="profile-v2-bus-card" data-demo-bus="MH12 RS 5512">
+            <span class="smart-star" title="Frequently used / Smart recommended"><i data-lucide="star"></i></span>
+            <div class="profile-v2-bus-top">
+              <div class="profile-v2-bus-title">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH12 RS 5512</h4>
+                  <p><i data-lucide="map-pin"></i> Hinjewadi &rarr; Shivajinagar</p>
+                </div>
+              </div>
+              <span class="profile-v2-live"><span></span> LIVE</span>
+            </div>
+            <div class="profile-v2-bus-metrics">
+              <div>
+                <p><i data-lucide="clock-3"></i> ETA</p>
+                <h5>12 min</h5>
+              </div>
+              <div>
+                <p><i data-lucide="navigation"></i> Distance</p>
+                <h5>4.1 km</h5>
+              </div>
+              <div class="profile-v2-crowd profile-v2-crowd-red">
+                <p><i data-lucide="users-round"></i> Crowd</p>
+                <h5>Full</h5>
+              </div>
+            </div>
+            <div class="profile-v2-bus-foot">
+              <p>Pickup: <strong>Phase 2 Gate</strong></p>
+              <span><i data-lucide="leaf"></i> 4.2 kg saved</span>
+            </div>
+            <div class="profile-v2-bus-actions">
+              <button class="btn btn-primary profile-v2-track-btn" type="button" data-demo-bus="MH12 RS 5512"><i data-lucide="map-pin"></i> Track</button>
+              <button class="btn profile-v2-check-btn" type="button" data-page="onBusPage"><i data-lucide="zap"></i> Check-in</button>
+            </div>
+          </article>
+
+          <article class="profile-v2-bus-card" data-demo-bus="MH12 CD 4490">
+            <span class="smart-star" title="Already bookmarked"><i data-lucide="star"></i></span>
+            <div class="profile-v2-bus-top">
+              <div class="profile-v2-bus-title">
+                <div class="icon soft-blue"><i data-lucide="bus"></i></div>
+                <div>
+                  <h4>MH12 CD 4490</h4>
+                  <p><i data-lucide="map-pin"></i> Aundh &rarr; Magarpatta</p>
+                </div>
+              </div>
+              <span class="profile-v2-live"><span></span> LIVE</span>
+            </div>
+            <div class="profile-v2-bus-metrics">
+              <div>
+                <p><i data-lucide="clock-3"></i> ETA</p>
+                <h5>18 min</h5>
+              </div>
+              <div>
+                <p><i data-lucide="navigation"></i> Distance</p>
+                <h5>6.8 km</h5>
+              </div>
+              <div class="profile-v2-crowd profile-v2-crowd-green">
+                <p><i data-lucide="users-round"></i> Crowd</p>
+                <h5>Not Crowded</h5>
+              </div>
+            </div>
+            <div class="profile-v2-bus-foot">
+              <p>Pickup: <strong>Parihar Chowk</strong></p>
+              <span><i data-lucide="leaf"></i> 1.4 kg saved</span>
+            </div>
+            <div class="profile-v2-bus-actions">
+              <button class="btn btn-primary profile-v2-track-btn" type="button" data-demo-bus="MH12 CD 4490"><i data-lucide="map-pin"></i> Track</button>
+              <button class="btn profile-v2-check-btn" type="button" data-page="onBusPage"><i data-lucide="zap"></i> Check-in</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="profile-v2-panel">
+        <div class="profile-v2-panel-head">
+          <h3>Contribution stats</h3>
+          <p>All time</p>
+        </div>
+        <div class="profile-v2-contrib-grid">
+          <article>
+            <div class="icon soft-blue"><i data-lucide="thumbs-up"></i></div>
+            <h4 id="profileVotes">0</h4>
+            <p>VOTES</p>
+          </article>
+          <article>
+            <div class="icon soft-purple"><i data-lucide="qr-code"></i></div>
+            <h4 id="profileScans">0</h4>
+            <p>QR SCANS</p>
+          </article>
+          <article>
+            <div class="icon soft-green"><i data-lucide="badge-check"></i></div>
+            <h4 id="profileConfirms">0</h4>
+            <p>CONFIRMS</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="profile-v2-panel">
+        <div class="profile-v2-panel-head">
+          <div>
+            <h3>Badges</h3>
+            <p>5 of 8 earned</p>
+          </div>
+          <div class="profile-v2-badge-progress">
+            <span style="width: 62.5%"></span>
+          </div>
+        </div>
+        <div class="profile-v2-badges-row">
+          <article><div class="icon soft-blue"><i data-lucide="bus"></i></div><p>First Ride</p></article>
+          <article><div class="icon"><i data-lucide="flame"></i></div><p>7-day Streak</p></article>
+          <article><div class="icon soft-purple"><i data-lucide="qr-code"></i></div><p>Scanner</p></article>
+          <article><div class="icon soft-green"><i data-lucide="leaf"></i></div><p>Eco Sapling</p></article>
+          <article><div class="icon soft-blue"><i data-lucide="rocket"></i></div><p>Top 100</p></article>
+          <article class="locked"><div class="icon"><i data-lucide="star"></i></div><p>Validator</p></article>
+          <article class="locked"><div class="icon"><i data-lucide="medal"></i></div><p>Eco Hero</p></article>
+          <article class="locked"><div class="icon"><i data-lucide="trophy"></i></div><p>Pioneer</p></article>
+        </div>
+      </section>
+
+      <section class="profile-v2-hidden">
+        <p id="profileUserId"></p>
+        <div id="leaderboardList"></div>
+      </section>
+
+      <div id="profileTrackModal" class="profile-v2-track-modal" aria-hidden="true">
+        <div class="profile-v2-track-dialog" role="dialog" aria-modal="true" aria-labelledby="profileTrackTitle">
+          <div class="profile-v2-track-head">
+            <div>
+              <p>Demo route</p>
+              <h3 id="profileTrackTitle">Live Bus Tracking (Demo)</h3>
+            </div>
+            <button id="profileTrackClose" class="profile-v2-track-close" type="button" aria-label="Close tracking map">X</button>
+          </div>
+          <div id="profileTrackMap" class="profile-v2-track-map"></div>
+          <div class="profile-v2-track-info">
+            <div>
+              <p>Bus number</p>
+              <h4 id="profileTrackBus">MH12 AB 1234</h4>
+            </div>
+            <div>
+              <p>ETA</p>
+              <h4 id="profileTrackEta">6 min</h4>
+            </div>
+            <div>
+              <p>Status</p>
+              <h4><span></span> LIVE</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button id="emergencyFloatBtn" class="emergency-float-btn" type="button" aria-label="Open emergency alert">
+    <i data-lucide="siren"></i>
+  </button>
+
+  <div id="emergencyModal" class="emergency-modal" aria-hidden="true">
+    <div class="emergency-dialog" role="dialog" aria-modal="true" aria-labelledby="emergencyTitle">
+      <div class="emergency-modal-head">
+        <div>
+          <div class="emergency-title-row">
+            <span class="emergency-head-icon"><i data-lucide="siren"></i></span>
+            <h3 id="emergencyTitle">Emergency Alert</h3>
+          </div>
+          <p>Report accidents, unsafe situations, or urgent help needed.</p>
+        </div>
+        <button id="emergencyCloseBtn" class="emergency-close-btn" type="button" aria-label="Close emergency alert">X</button>
+      </div>
+      <div class="emergency-progress" aria-hidden="true">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="emergency-step active" data-emergency-step="1">
+        <h4>Where is this happening?</h4>
+        <button id="emergencyLocationBtn" class="emergency-location-btn" type="button">
+          <i data-lucide="map-pin"></i>
+          Use My Current Location
+        </button>
+        <div id="emergencyDetectedLocation" class="emergency-detected hidden">
+          <i data-lucide="map-pin"></i>
+          <div>
+            <h5>Detected location: Near MG Road, Bengaluru</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="emergency-step" data-emergency-step="2">
+        <h4>What's the emergency?</h4>
+        <div class="emergency-type-grid">
+          <button class="emergency-type-card" type="button" data-emergency-type="Accident"><i data-lucide="ambulance"></i><span>Accident</span></button>
+          <button class="emergency-type-card" type="button" data-emergency-type="Safety Issue"><i data-lucide="shield-alert"></i><span>Safety Issue</span></button>
+          <button class="emergency-type-card" type="button" data-emergency-type="Bus Breakdown"><i data-lucide="bus-front"></i><span>Bus Breakdown</span></button>
+          <button class="emergency-type-card" type="button" data-emergency-type="Medical Emergency"><i data-lucide="heart-pulse"></i><span>Medical Emergency</span></button>
+          <button class="emergency-type-card" type="button" data-emergency-type="Other"><i data-lucide="triangle-alert"></i><span>Other</span></button>
+        </div>
+      </div>
+
+      <div class="emergency-step" data-emergency-step="3">
+        <h4>Add details (optional)</h4>
+        <textarea id="emergencyDetails" class="emergency-details" placeholder="e.g. Bus collision near signal, driver not responding..."></textarea>
+        <p class="emergency-note">Your alert will be shared with nearby users and authorities.</p>
+      </div>
+
+      <div class="emergency-actions">
+        <button id="emergencyBackBtn" class="emergency-back-btn" type="button" aria-label="Go back"><i data-lucide="chevron-left"></i></button>
+        <button id="emergencyContinueBtn" class="emergency-continue-btn" type="button">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="emergencyConfirmModal" class="emergency-confirm-modal" aria-hidden="true">
+    <div class="emergency-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="emergencyConfirmTitle">
+      <h3 id="emergencyConfirmTitle">Send this emergency alert?</h3>
+      <p>This will notify users on this route and relevant authorities. Only send if it's a real emergency.</p>
+      <div>
+        <button id="emergencyCancelSendBtn" class="btn btn-ghost" type="button">Cancel</button>
+        <button id="emergencySendConfirmBtn" class="emergency-red-btn" type="button">Yes, send alert</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="emergencyRouteAlert" class="emergency-route-alert" aria-hidden="true">
+    <div class="emergency-route-card" role="dialog" aria-modal="true" aria-labelledby="emergencyRouteTitle">
+      <button id="emergencyRouteCloseBtn" class="emergency-close-btn" type="button" aria-label="Close route alert">X</button>
+      <div class="emergency-route-head">
+        <i data-lucide="triangle-alert"></i>
+        <div>
+          <h3 id="emergencyRouteTitle">Accident ahead on this route</h3>
+          <p>An incident has been reported on this bus route.</p>
+        </div>
+      </div>
+      <div class="emergency-route-details">
+        <span><i data-lucide="map-pin"></i><b>MH 12 AB 1234</b> — Kothrud &rarr; Swargate</span>
+        <span><i data-lucide="map-pin"></i>Location: <b>Near Karve Road</b></span>
+        <span><i data-lucide="clock-3"></i>Reported: <b>2 mins ago</b></span>
+      </div>
+      <div class="emergency-confidence">
+        <span>Confidence</span>
+        <strong>78%</strong>
+      </div>
+      <div class="emergency-delay-box"><i data-lucide="clock-3"></i> Expected delay: 5–10 minutes</div>
+      <div class="emergency-confidence">
+        <div class="emergency-future">
+          <h4><i data-lucide="info"></i> Future upgrade</h4>
+          <p>• Nearby users verify incidents</p>
+          <p>• Auto alert to authorities</p>
+          <p>• Smart rerouting for buses</p>
+          <p>• Real-time delay prediction</p>
+        </div>
+      </div>
+      <button id="emergencyRouteGotItBtn" class="btn btn-primary emergency-got-it-btn" type="button">Got it</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./data/pilot-stops.js"></script>
+  <script src="./data/segments.js"></script>
+  <script src="./data/pilot-segment-coordinates.js"></script>
+  <script src="./data/pilot-route-coordinates.js"></script>
+  <script src="./data/pilot-routes.js"></script>
+  <script src="./data/pilot-buses.js"></script>
+  <script src="./data/trips.js"></script>
+  <script src="./data/pilot-transit-dataset.js"></script>
+  <script src="./data/cities.js"></script>
+  <script src="./data/stops.js"></script>
+  <script src="./data/buses.js"></script>
+  <script src="./data/routes.js"></script>
+  <script src="./data/profile-demo-buses.js"></script>
+  <script src="./script.js"></script>
+  <script src="./app.js"></script>
+  <script type="module" src="./firebase/eta-utils.js"></script>
+  <script type="module" src="./firebase/index.js"></script>
+  <script type="module" src="./firebase/passenger-tracking-service.js"></script>
+  <script type="module" src="./firebase/passenger-journey-service.js"></script>
+</body>
+</html>

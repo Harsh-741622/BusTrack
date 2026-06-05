@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BusTrack Replay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    .replay-shell { max-width: 1100px; margin: 18px auto; padding: 0 16px; }
+    .replay-card { background: #0f172a; border: 1px solid rgba(148,163,184,0.15); border-radius: 18px; padding: 16px; color: #e2e8f0; }
+    .replay-top { display:flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .replay-top h1 { font-size: 18px; margin: 0; }
+    .replay-controls { display:flex; gap: 8px; align-items:center; flex-wrap: wrap; }
+    .replay-btn { background:#111827; border:1px solid rgba(148,163,184,0.25); color:#e2e8f0; padding: 8px 10px; border-radius: 12px; font-weight: 600; cursor:pointer; }
+    .replay-btn.primary { background:#2563eb; border-color:#2563eb; }
+    .replay-meta { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-top: 12px; }
+    .replay-meta article { background: rgba(15,23,42,0.6); border:1px solid rgba(148,163,184,0.15); border-radius: 14px; padding: 10px; }
+    .replay-meta span { display:block; font-size: 12px; opacity: 0.75; }
+    .replay-meta strong { display:block; font-size: 14px; margin-top: 4px; }
+    #replayMap { height: 460px; border-radius: 16px; overflow: hidden; margin-top: 14px; border:1px solid rgba(148,163,184,0.15); }
+    .replay-log { margin-top: 12px; font-size: 13px; opacity: 0.9; line-height: 1.35; max-height: 160px; overflow:auto; padding-right: 6px; }
+    .replay-hint { font-size: 12px; opacity: 0.7; margin-top: 10px; }
+    @media (max-width: 900px) { .replay-meta { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  </style>
+</head>
+<body>
+  <main class="replay-shell">
+    <section class="replay-card">
+      <div class="replay-top">
+        <div>
+          <h1>BusTrack / Historical Replay</h1>
+          <div class="replay-hint">
+            Open with: <code>?bus=GJ-18-Z-7932&amp;date=YYYY-MM-DD&amp;speed=30</code>
+          </div>
+        </div>
+        <div class="replay-controls">
+          <button id="replayPlayBtn" class="replay-btn primary" type="button">Play</button>
+          <button id="replayPauseBtn" class="replay-btn" type="button">Pause</button>
+          <button id="replayRestartBtn" class="replay-btn" type="button">Restart</button>
+          <label style="display:flex; gap:6px; align-items:center;">
+            <span style="font-size:12px; opacity:0.75;">Speed</span>
+            <input id="replaySpeed" type="number" min="1" step="1" value="20" style="width:86px; padding:6px; border-radius:10px; border:1px solid rgba(148,163,184,0.25); background:#0b1220; color:#e2e8f0;">
+          </label>
+        </div>
+      </div>
+
+      <div class="replay-meta">
+        <article><span>Bus</span><strong id="replayBus">—</strong></article>
+        <article><span>Date</span><strong id="replayDate">—</strong></article>
+        <article><span>ETA (GPS)</span><strong id="replayEta">—</strong></article>
+        <article><span>Operational State</span><strong id="replayState">—</strong></article>
+      </div>
+
+      <div id="replayMap"></div>
+      <div id="replayLog" class="replay-log"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="./data/pilot-stops.js"></script>
+  <script src="./data/segments.js"></script>
+  <script src="./data/pilot-segment-coordinates.js"></script>
+  <script src="./data/pilot-route-coordinates.js"></script>
+  <script src="./data/pilot-buses.js"></script>
+  <script src="./data/pilot-routes.js"></script>
+  <script src="./data/trips.js"></script>
+  <script src="./data/pilot-transit-dataset.js"></script>
+  <script type="module" src="./firebase/index.js"></script>
+  <script type="module" src="./firebase/replay-engine.js"></script>
+  <script type="module" src="./replay.js"></script>
+</body>
+</html>
